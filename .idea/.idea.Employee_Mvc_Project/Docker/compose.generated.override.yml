@@ -1,0 +1,24 @@
+# This is a generated file. Not intended for manual editing.
+version: "3.4"
+services:
+  employee.ui:
+    build:
+      context: "D:\\Employee_Mvc_Project"
+      dockerfile: "Employee_UI/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/Employee.UI.dll"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_STATICWEBASSETS: "/app/bin/Debug/net8.0/Employee.UI.staticwebassets.runtime.CT.json"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "employee.ui:dev"
+    ports: []
+    volumes:
+    - "D:\\Employee_Mvc_Project\\Employee_UI:/app:rw"
+    - "D:\\Employee_Mvc_Project:/src:rw"
+    - "C:\\Users\\guhan\\AppData\\Roaming\\Microsoft\\UserSecrets:/home/app/.microsoft/usersecrets"
+    - "C:\\Users\\guhan\\.nuget\\packages:/home/app/.nuget/packages"
+    working_dir: "/app"

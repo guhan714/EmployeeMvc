@@ -1,0 +1,349 @@
+﻿@model Employee.Domain.Models.Employees
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 bg-white p-4 shadow rounded-3 border">
+            <h2 class="mb-4 text-primary">Create Employee</h2>
+
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <input type="hidden" asp-for="EmployeeId"/>
+
+                <div class="row g-3">
+                    <!-- Name & Contact -->
+                    <div class="col-md-6">
+                        <label asp-for="FirstName" class="form-label"></label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-person-lines-fill"></i>
+                            </span>
+                            <input asp-for="FirstName" class="form-control" />
+                        </div>
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="LastName" class="form-label"></label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-person-lines-fill"></i>
+                            </span>
+                            <input asp-for="LastName" class="form-control" />
+                        </div>
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Email" class="form-label"></label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-envelope"></i> <!-- Bootstrap Icons: envelope -->
+                            </span>
+                            <input asp-for="Email" class="form-control" />
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-phone"></i>
+                            </span>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                        </div>
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <!-- Identity -->
+                    <div class="col-md-6">
+                        <label asp-for="NationalIdNumber" class="form-label">National Id Number</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-person-vcard"></i>
+                            </span>
+                            <input asp-for="NationalIdNumber" class="form-control" />
+                        </div>
+                        <span asp-validation-for="NationalIdNumber" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="DateOfBirth" class="form-label">Date Of Birth</label>
+                        <input asp-for="DateOfBirth" class="form-control" type="date"/>
+                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-12">
+                        <label asp-for="Address" class="form-label">Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-house"></i>
+                                </span>
+                                <input asp-for="Address" class="form-control" />
+                            </div>
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+
+                    <!-- Department & Role -->
+                    <div class="col-md-6">
+                        <label asp-for="DepartmentId" class="form-label">Department</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-building"></i> <!-- Department icon -->
+                            </span>
+                            @Html.DropDownListFor(model => model.DepartmentId,
+                            ViewBag.DepartmentId as SelectList,
+                                                        "Select Department",
+                                                        new { @class = "form-select" })
+                        </div>
+                        <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Designation" class="form-label">Designation</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-briefcase"></i> <!-- Bootstrap Icon for Designation -->
+                            </span>
+                            <input asp-for="Designation" class="form-control" />
+                        </div>
+                        <span asp-validation-for="Designation" class="text-danger"></span>
+                    </div>
+
+                    <!-- Dates -->
+
+                    <div class="col-md-4">
+                        <label asp-for="DateOfJoining" class="form-label">Date Of Joining</label>
+                        <input asp-for="DateOfJoining" class="form-control" type="date"/>
+                        <span asp-validation-for="DateOfJoining" class="text-danger"></span>
+                    </div>
+
+                    <!-- Other Info -->
+                    <div class="col-md-4">
+                        <label asp-for="Salary" class="form-label">Salary</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">&#8377</span>
+                            <input asp-for="Salary" class="form-control" />
+                            <span class="input-group-text">.00</span>
+                        </div>
+                        <span asp-validation-for="Salary" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Gender" class="form-label">Gender</label>
+                        <input asp-for="Gender" class="form-control"/>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+                    <div class="col-lg-3 col-md-4">
+                        <label asp-for="BloodGroup" class="form-label">Blood Group</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-droplet-fill"></i>
+                            </span>
+                            <input asp-for="BloodGroup" class="form-control" />
+                        </div>
+                        <span asp-validation-for="BloodGroup" class="text-danger"></span>
+                    </div>
+                    <div class="col-lg-3 col-md-4">
+                        <label asp-for="MaritalStatus" class="form-label">Marital Status</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-people-fill"></i>
+                            </span>
+                            <input asp-for="MaritalStatus" class="form-control" />
+                        </div>
+                        <span asp-validation-for="MaritalStatus" class="text-danger"></span>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="col-lg-3 col-md-4 d-flex flex-column align-items-center justify-content-start">
+                        <label asp-for="IsActive" class="form-label">Employee Status</label>
+                        <div class="form-check">
+                            <input class="form-check-input" asp-for="IsActive" checked/>
+                            <label class="form-check-label" asp-for="IsActive">Active</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+                    <input type="button" id="SubmitEmployee" value="Save" class="btn btn-primary"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+
+        function showError(messages) {
+            // Ensure messages is an array
+            if (!Array.isArray(messages)) {
+                messages = [messages];
+            }
+
+            messages.forEach(message => {
+                $('#errorMessage').text(`${message}`);
+                $('#errorAlertWrapper').fadeIn();
+
+                // Auto-dismiss after 5 seconds
+                setTimeout(function () {
+                    $('#errorAlertWrapper').fadeOut();
+                }, 2000);
+            });
+
+            // Show the alert
+
+        }
+
+
+        function clearErrors() {
+            $('.text-danger').text('');
+        }
+
+        function validateEmployee(employee) {
+            clearErrors();
+            let isValid = true;
+
+            if (!employee.firstName) {
+                $('#FirstName').next('.text-danger').text("Please enter your first name");
+                isValid = false;
+            }
+
+            if (!employee.lastName) {
+                $('#LastName').next('.text-danger').text("Please enter your last name");
+                isValid = false;
+            }
+
+            if (!employee.email) {
+                $('#Email').next('.text-danger').text("Please enter your email");
+                isValid = false;
+            }
+
+            if (!employee.phoneNumber) {
+                $('#PhoneNumber').next('.text-danger').text("Please enter your phone number");
+                isValid = false;
+            }
+
+            if (!employee.nationalIdNumber) {
+                $('#NationalIdNumber').next('.text-danger').text("Please enter your national ID number");
+                isValid = false;
+            }
+
+            if (!employee.dateOfBirth) {
+                $('#DateOfBirth').next('.text-danger').text("Please enter your date of birth");
+                isValid = false;
+            } else {
+                const dob = new Date(employee.dateOfBirth);
+                if (dob > Date.now()) {
+                    $('#DateOfBirth').next('.text-danger').text("Date of birth cannot be in the future");
+                    isValid = false;
+                }
+            }
+
+            if (!employee.dateOfJoining) {
+                $('#DateOfJoining').next('.text-danger').text("Please enter your date of joining");
+                isValid = false;
+            }
+
+            if (!employee.address) {
+                $('#Address').next('.text-danger').text("Please enter your address");
+                isValid = false;
+            }
+
+            if (!employee.departmentId) {
+                $('#Department').next('.text-danger').text("Please enter your department");
+                isValid = false;
+            }
+
+            if (!employee.designation) {
+                $('#Designation').next('.text-danger').text("Please enter your designation");
+                isValid = false;
+            }
+
+            if (!employee.salary || isNaN(employee.salary) || parseFloat(employee.salary) <= 0) {
+                $('#Salary').next('.text-danger').text("Please enter a valid salary");
+                isValid = false;
+            }
+
+            if (!employee.gender) {
+                $('#Gender').next('.text-danger').text("Please enter your gender");
+                isValid = false;
+            }
+
+            if (!employee.bloodGroup) {
+                $('#BloodGroup').next('.text-danger').text("Please enter your blood group");
+                isValid = false;
+            }
+
+            if (!employee.maritalStatus) {
+                $('#MaritalStatus').next('.text-danger').text("Please enter your marital status");
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+
+        $('#SubmitEmployee').on('click', function () {
+
+            let employee = {
+                firstName: $('#FirstName').val(),
+                lastName: $('#LastName').val(),
+                email: $('#Email').val(),
+                phoneNumber: $('#PhoneNumber').val(),
+                nationalIdNumber: $('#NationalIdNumber').val(),
+                address: $('#Address').val(),
+                departmentId: parseInt($('#DepartmentId').val(), 10),
+                designation: $('#Designation').val(),
+                dateOfBirth: $('#DateOfBirth').val(),
+                dateOfJoining: $('#DateOfJoining').val(),
+                isActive: $('#IsActive').is(":checked"),
+                salary: $('#Salary').val(),
+                gender: $('#Gender').val(),
+                bloodGroup: $('#BloodGroup').val(),
+                maritalStatus: $('#MaritalStatus').val(),
+                createdDate: $('#CreatedAt').val(),
+                modifiedDate: $('#UpdatedAt').val()
+            };
+            
+            let validationResult = validateEmployee(employee);
+            if (!validationResult)
+                return;
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Create", "Employees")',
+                data: {employees: employee},
+                success: function (response) {
+
+                    if (!response.success) {
+                        $('#successAlert .modal-body').html(
+                            `<img alt="errorMessage" class=" rounded-circle" height="100px" src="/Assets/close.png" width="100px"></img><p>${response.error}</p>`);
+                        $('#successAlert').modal('show');
+                        setTimeout(() => {
+                            $('#successAlert').modal('hide');
+                        }, 2000);
+                        return;
+                    }
+
+                    $("#successAlert .modal-body").html(
+                        '<img src="/Assets/check.png" width="100px"; height="100px"; class=" rounded-circle" alt="successIcon"></img><p>Employee Created successfully</p>');
+                    $("#successAlert").modal('show');
+                    setTimeout(() => {
+                        $('#successAlert').modal('hide');
+                        window.location.href = response.redirectUrl;
+                    }, 1000);
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        });
+    </script>
+}

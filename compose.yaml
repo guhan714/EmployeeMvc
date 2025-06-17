@@ -1,0 +1,25 @@
+﻿version: '3.4'
+
+services:
+  employee.ui:
+    image: employee.ui
+    build:
+      context: .
+      dockerfile: Employee_UI/Dockerfile
+    ports:
+      - "8080:80"
+    
+    environment:
+      - "ConnectionStrings__EmployeeConnection=Server=host.docker.internal,1433;Database=Employee;User Id=sa;Password=Guhan@712004;Trust Server Certificate =True;"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'     # Max 50% of 1 core
+          memory: 512M     #
+
+    networks:
+      - employee-network
+
+networks:
+  employee-network:
+    driver: bridge

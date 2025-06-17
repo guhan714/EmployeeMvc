@@ -1,0 +1,35 @@
+﻿
+@{
+    Layout = null;
+    var userName = ViewBag.UserName;
+}
+
+<head>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+</head>
+<div class="container col-md-6 col-lg-4 mt-5">
+    <div class="card border-danger shadow-lg rounded-4">
+        <div class="card-header bg-danger text-white d-flex align-items-center">
+            <i class="bi bi-box-arrow-right me-2 fs-4"></i>
+            <strong> You’ve Been Logged Out </strong>
+        </div>
+        <div class="card-body bg-light">
+            <p class="card-text fs-5">
+                <i class="bi bi-person-circle me-2 text-secondary"></i>
+                <strong>@userName</strong>, you have been successfully logged out.
+            </p>
+            <p class="card-text fs-6">
+                <i class="bi bi-clock-history me-2 text-info"></i>
+                Total time spent: <strong>@ViewBag.TimeSpan</strong>
+            </p>
+            <div class="text-center mt-4">
+                <a href="@Url.Action("Index", "Home")" class="btn btn-outline-primary btn-sm rounded-pill">
+                    <i class="bi bi-box-arrow-in-right me-1"></i> Login Again
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,256 @@
+﻿@model Employee.Domain.Models.Employees
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 bg-white p-4 shadow rounded-3 border">
+            <h2 class="mb-4 text-primary">Create Employee</h2>
+
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <input type="hidden" asp-for="EmployeeId" />
+
+                <div class="row g-3">
+                    <!-- Name & Contact -->
+                    <div class="col-md-6">
+                        <label asp-for="FirstName" class="form-label"></label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-person-lines-fill"></i>
+                            </span>
+                            <input asp-for="FirstName" class="form-control" />
+                        </div>
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="LastName" class="form-label"></label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-person-lines-fill"></i>
+                            </span>
+                            <input asp-for="LastName" class="form-control" />
+                        </div>
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Email" class="form-label"></label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-envelope"></i> <!-- Bootstrap Icons: envelope -->
+                            </span>
+                            <input asp-for="Email" class="form-control" />
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-phone"></i>
+                            </span>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                        </div>
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <!-- Identity -->
+                    <div class="col-md-6">
+                        <label asp-for="NationalIdNumber" class="form-label">National Id Number</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-person-vcard"></i>
+                            </span>
+                            <input asp-for="NationalIdNumber" class="form-control" />
+                        </div>
+                        <span asp-validation-for="NationalIdNumber" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="DateOfBirth" class="form-label">Date Of Birth</label>
+                        <input asp-for="DateOfBirth" class="form-control" type="date" />
+                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-12">
+                        <label asp-for="Address" class="form-label">Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-house"></i>
+                            </span>
+                            <input asp-for="Address" class="form-control" />
+                        </div>
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+
+                    <!-- Department & Role -->
+                    <div class="col-md-6">
+                        <label asp-for="DepartmentId" class="form-label">Department</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-building"></i> <!-- Department icon -->
+                            </span>
+                            @Html.DropDownListFor(model => model.DepartmentId,
+                            ViewBag.DepartmentId as SelectList,
+                                                        "Select Department",
+                                                        new { @class = "form-select" })
+                        </div>
+                        <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Designation" class="form-label">Designation</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-briefcase"></i> <!-- Bootstrap Icon for Designation -->
+                            </span>
+                            <input asp-for="Designation" class="form-control" />
+                        </div>
+                        <span asp-validation-for="Designation" class="text-danger"></span>
+                    </div>
+
+                    <!-- Dates -->
+
+                    <div class="col-md-4">
+                        <label asp-for="DateOfJoining" class="form-label">Date Of Joining</label>
+                        <input asp-for="DateOfJoining" class="form-control" type="date" />
+                        <span asp-validation-for="DateOfJoining" class="text-danger"></span>
+                    </div>
+
+                    <!-- Other Info -->
+                    <div class="col-md-4">
+                        <label asp-for="Salary" class="form-label">Salary</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">&#8377</span>
+                            <input asp-for="Salary" class="form-control" />
+                            <span asp-validation-for="Salary" class="text-danger"></span>
+                            <span class="input-group-text">.00</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="Gender" class="form-label">Gender</label>
+                        <input asp-for="Gender" class="form-control" />
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="BloodGroup" class="form-label">Blood Group</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-droplet-fill"></i>
+                            </span>
+                            <input asp-for="BloodGroup" class="form-control" />
+                        </div>
+                        <span asp-validation-for="BloodGroup" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="MaritalStatus" class="form-label">Marital Status</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-people-fill"></i>
+                            </span>
+                            <input asp-for="MaritalStatus" class="form-control" />
+                        </div>
+                        <span asp-validation-for="MaritalStatus" class="text-danger"></span>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="col-md-3 d-flex flex-column align-items-center justify-content-start">
+                        <label asp-for="IsActive" class="form-label">Employee Status</label>
+                        <div class="form-check">
+                            <input class="form-check-input" asp-for="IsActive"/>
+                            <label class="form-check-label" asp-for="IsActive">Active</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-box-arrow-left"></i></a>
+                    <input type="button" id="EditEmployee" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+
+    <script>
+        function fetchFormData()
+        {
+                var employeeId = $('#EmployeeId').val();
+                var firstName = $('#FirstName').val();
+                var lastName = $('#LastName').val();
+                var email = $('#Email').val();
+                var phoneNumber = $('#PhoneNumber').val();
+                var nationalIdNumber = $('#NationalIdNumber').val();
+                var address = $('#Address').val();
+                var departmentId = parseInt($('#DepartmentId').val(), 10);
+                var designation = $('#Designation').val();
+                var dateOfBirth = $('#DateOfBirth').val();
+                var dateOfJoining = $('#DateOfJoining').val();
+                var isActive = $('#IsActive').prop('checked'); 
+                var salary = $('#Salary').val();
+                var gender = $('#Gender').val();
+                var bloodGroup = $('#BloodGroup').val();
+                var maritalStatus = $('#MaritalStatus').val();
+                var createdDate = $('#CreatedAt').val();
+                var modifiedDate = $('#UpdatedAt').val();
+
+                var object = {
+                    employeeId,
+                    firstName,
+                    lastName,
+                    email,
+                    phoneNumber,
+                    nationalIdNumber,
+                    address,
+                    departmentId,
+                    designation,
+                    dateOfBirth,
+                    dateOfJoining,
+                    isActive,
+                    salary,
+                    gender,
+                    bloodGroup,
+                    maritalStatus,
+                    createdDate,
+                    modifiedDate
+                };
+
+                return object;
+        }
+
+        $('#EditEmployee').on('click', function()
+        {
+                const employeeFormData = fetchFormData();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("Edit", "Employees")',
+                    data: { employees : employeeFormData },
+                    success: function(response)
+                    {
+                                // Show modal after 0ms (immediately)
+                       $('#successAlert .modal-body')
+                            .html(
+                             '<img src="/Assets/check.png" width="100px"; height="100px"; class=" rounded-circle"></img><p>Employee Updated successfully</p>'
+                            );
+                        $('#successAlert').modal('show');
+                        setTimeout(() => {
+                            $('#successAlert').modal('hide');
+                                setTimeout(() => {
+                                    window.location.href = response.redirectUrl;
+                                }, 100); // Wait after hiding before redirecting
+                        }, 1000);
+                    
+                    }
+
+                });
+
+        })
+    </script>
+}

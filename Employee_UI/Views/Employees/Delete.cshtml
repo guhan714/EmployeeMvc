@@ -1,0 +1,128 @@
+﻿@model Employee.Domain.Models.Employees
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container col-8 mt-4">
+    <h2 class="text-danger mb-4">Delete Confirmation</h2>
+    <h5>Are you sure you want to delete this employee?</h5>
+
+    <div class="card shadow p-4 mb-4">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold" for="@Model.FirstName">First Name</label>
+                <div>@Model.FirstName</div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold" for="@Model.LastName">Last Name</label>
+                <div>@Model.LastName</div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold" for="@Model.Email">Email</label>
+                <div>@Model.Email</div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold" for="@Model.PhoneNumber">Phone Number</label>
+                <div>@Model.PhoneNumber</div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold" for="@Model.NationalIdNumber">National ID</label>
+                <div>@Model.NationalIdNumber</div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold" for="@Model.Address">Address</label>
+                <div>@Model.Address</div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold" for="@Model.Department">Department</label>
+                <div>@Model.Department</div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold" for="@Model.Designation">Designation</label>
+                <div>@Model.Designation</div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold" for="@Model.DateOfBirth">Date of Birth</label>
+                <div>@Model.DateOfBirth?.ToShortDateString()</div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold" for="@Model.DateOfJoining">Date of Joining</label>
+                <div>@Model.DateOfJoining?.ToShortDateString()</div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold" for="@Model.IsActive">Status</label>
+                <div>@(Model.IsActive ? "Active" : "Inactive")</div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold" for="@Model.Salary">Salary</label>
+                <div>@Model.Salary</div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold" for="@Model.Gender">Gender</label>
+                <div>@Model.Gender</div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold" for="@Model.BloodGroup">Blood Group</label>
+                <div>@Model.BloodGroup</div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold" for="@Model.MaritalStatus">Marital Status</label>
+                <div>@Model.MaritalStatus</div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold" for="@Model.CreatedAt">Created At</label>
+                <div>@Model.CreatedAt?.ToString("g")</div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="fw-bold" for="@Model.UpdatedAt" >Updated At</label>
+                <div>@Model.UpdatedAt?.ToString("g")</div>
+            </div>
+        </div>
+        <form asp-action="Delete" class="d-flex justify-content-end">
+            <input type="hidden" asp-for="EmployeeId" />
+            <a asp-action="Index" class="btn btn-outline-secondary me-2">Back to List</a>
+            <button type="button" id="deleteEmployee" class="btn btn-danger me-2">Delete</button>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+<script>
+
+    $('#deleteEmployee').on('click', function()
+    {
+        const employeeId = '@Model.EmployeeId';
+        $('#deleteConfimationModal').modal('show');
+        $('#deleteConfimationModal .modal-body').html('<p>Are you sure to delete?</p>');
+        $('#confirmDelete').on('click', function()
+        {
+            $('#deleteConfimationModal').modal('hide');
+            deleteEmployee(employeeId);
+        });
+    });
+
+    function deleteEmployee(employeeId)
+    {
+        $.ajax({
+            type:'POST',
+                url: '@Url.Action("Delete", "Employees")',
+            data : { id : employeeId },
+            success: function(response){
+                           $('#successAlert .modal-body').html(
+                    '<img src="/Assets/check.png" width="100px"; height="100px"; class=" rounded-circle"></img><p>Employee Updated successfully</p>');
+                             $('#successAlert').modal('show');
+                            setTimeout(() =>{
+                                window.location.href = response.redirectUrl;
+                            }, 1000);
+            }
+        });
+    }
+</script>
+}
