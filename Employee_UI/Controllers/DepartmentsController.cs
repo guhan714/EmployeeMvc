@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+﻿using Employee.DataAccess.Persistence.DbContexts;
 using Employee.Domain.Models;
-using Employee.DataAccess.Persistence.DbContexts;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-namespace Employee.UI.Views
+namespace Employee.UI.Controllers
 {
+    [Authorize(Roles = "Admin")] // Only Admin role
     public class DepartmentsController : Controller
     {
         private readonly AppDbContext _context;

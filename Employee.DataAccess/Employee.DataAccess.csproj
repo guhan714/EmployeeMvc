@@ -19,11 +19,16 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="ZLinq" Version="1.4.11" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Employee.BusinessLogic\Employee.BusinessLogic.csproj" />
     <ProjectReference Include="..\Employee.Domain\Employee.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Infrastructure\" />
   </ItemGroup>
 
 </Project>

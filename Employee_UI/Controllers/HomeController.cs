@@ -1,28 +1,34 @@
+using System.Diagnostics;
+using System.Globalization;
+using System.Security.Claims;
+using System.Text;
+using Employee_UI.Models;
+using Employee.BusinessLogic.Interfaces.Service.Domain;
+using Employee.BusinessLogic.Interfaces.Service.Masters;
 using Employee.BusinessLogic.Interfaces.Service.Security;
 using Employee.DataAccess.Persistence.DbContexts;
 using Employee.UI.Models;
-using Employee_UI.Models;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
-using System.Text;
 
-namespace Employee_UI.Controllers
+namespace Employee.UI.Controllers
 {
     [EnableRateLimiting("fixed")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly AppDbContext _context;
-        private readonly ICryptographyService _cryptographyService;
+        private readonly ILoginService _loginService;
+        private readonly IRoleService _roleService;
 
-        public HomeController(ILogger<HomeController> logger, AppDbContext appDbContext, ICryptographyService cryptographyService)
+        public HomeController(ILogger<HomeController> logger, AppDbContext appDbContext, ICryptographyService cryptographyService, ILoginService loginService, IRoleService roleService)
         {
             _logger = logger;
             _context = appDbContext;
-            _cryptographyService = cryptographyService;
+            _loginService = loginService;
+            _roleService = roleService;
         }
 
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
@@ -39,27 +45,42 @@ namespace Employee_UI.Controllers
             {
                 return View(loginViewModel);
             }
+            
+            var user = await _loginService.LoginAsync(loginViewModel.Email, loginViewModel.Password);
 
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == loginViewModel.Email);
-            if(user == null)
+            if (!user.IsSuccess)
             {
-                ModelState.AddModelError("", "Invalid login attempt.");
+                ModelState.AddModelError("", user.Message);
                 return View(loginViewModel);
             }
 
-            var verfiedPassword = _cryptographyService.VerifyPassword(loginViewModel.Password, user.Password);
+            List<Claim> claims =
+            [
+                new(ClaimTypes.NameIdentifier, user?.Data?.UserId.ToString() ?? string.Empty),
+                new(ClaimTypes.Name, user.Data.Username ?? string.Empty),
+                new(ClaimTypes.Email, loginViewModel.Email),
+            ];
 
-            if(!verfiedPassword)
+            var roles = await _roleService.GetUserRolesAsync(user.Data.UserId); // ← Create this method
+            foreach (var role in roles)
             {
-                ModelState.AddModelError("", "Invalid login attempt.");
-                return View(loginViewModel);
+                claims.Add(new Claim(ClaimTypes.Role, role.Role.RoleName)); // Assign only this user's roles
             }
 
-            var userBuilder = new StringBuilder();
-            userBuilder.Append(user.FirstName).Append(' ').Append(user.LastName);
-            HttpContext.Session.SetString("userName", userBuilder.ToString());
-            HttpContext.Session.SetString("LoggedInAt", DateTime.Now.ToString());
-            userBuilder.Clear();
+
+            var identity = new ClaimsIdentity(claims, "MyCookieAuth");
+            var principal = new ClaimsPrincipal(identity);
+            
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30)
+            };
+            
+            await HttpContext.SignInAsync("MyCookieAuth", principal, authProperties);
+            
+            HttpContext.Session.SetString("userName", user.Data?.Username ?? string.Empty);
+            HttpContext.Session.SetString("LoggedInAt", DateTime.Now.ToString()); // ISO 8601, consistent
             return RedirectToAction("Index", "Employees");
         }
 
@@ -68,7 +89,7 @@ namespace Employee_UI.Controllers
             return View();
         }
 
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
             ViewBag.UserName = HttpContext.Session.GetString("userName");
 
@@ -77,6 +98,7 @@ namespace Employee_UI.Controllers
             var timeSpan = loggedInAt ? currentTime - loggedIn : TimeSpan.Zero;
             ViewBag.TimeSpan = timeSpan.ToString(@"mm\:ss");
             HttpContext.Session.Clear();
+            await HttpContext.SignOutAsync("MyCookieAuth");
             return View();
         }
 

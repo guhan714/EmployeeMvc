@@ -27,3 +27,15 @@ body {
     .sidebar {
         left: -250px;
     }
+}
+
+
+#EmployeesTable td:nth-child(8)
+{
+    text-align:center;
+}
+#EmployeesTable tr {
+    border-bottom: 1px solid #dee2e6 !important;
+}
+
+

@@ -28,6 +28,9 @@ namespace Employee.UI.Controllers
         // GET: Employees
         public async Task<IActionResult> Index(int departmentId)
         {
+            if(!ModelState.IsValid)
+                return View("Index");
+            
             if (string.IsNullOrEmpty(HttpContext.Session.GetString("userName")))
             {
                 return RedirectToAction("Index", "Home");
@@ -43,9 +46,7 @@ namespace Employee.UI.Controllers
         public async Task<IActionResult> LoadEmployees()
         {
             var (draw, start, length, name, phone, departmentId) = GetDataTableParameters();
-           /* var sortColmn = Request.Form["order[2]"].FirstOrDefault();
-            var sortOrder = Request.Form["order[2][dir]"].FirstOrDefault();
-            var columnName = Request.Form[$"columns[{sortColmn}][data]"].FirstOrDefault();*/
+          
             var paginatedResult = await _employeeService.GetAllEmployees(start, length, name, phone, departmentId);
 
             return Json(new
@@ -89,7 +90,7 @@ namespace Employee.UI.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Employees employees)
         {
             var user = HttpContext.Session.GetString("userName");
@@ -200,6 +201,12 @@ namespace Employee.UI.Controllers
             return Json(new { redirectUrl = Url.Action("Index", "Employees") });
         }
 
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+        
+
         /*private bool EmployeesExists(Guid id)
         {
             return _context.Employees.Any(e => e.EmployeeId == id);
@@ -240,9 +247,11 @@ namespace Employee.UI.Controllers
 
             var name = Request.Form["name"].FirstOrDefault();
             var phone = Request.Form["phone"].FirstOrDefault();
-            var departmentIdStr = Request.Form["DepartmentId"].FirstOrDefault();
-            int.TryParse(departmentIdStr, out int departmentId);
-
+            var isValidDepartment = int.TryParse(Request.Form["DepartmentId"], out var departmentId);
+            
+            if (!isValidDepartment)
+                departmentId = 0;
+                
             return new ValueTuple<string, int, int, string, string, int>(draw, start, length, name, phone, departmentId);
         }
     }

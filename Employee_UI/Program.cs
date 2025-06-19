@@ -7,10 +7,16 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-/*
-builder.WebHost.UseUrls("http://*:80");
-*/
+/*builder.WebHost.UseUrls("http://*:80");*/
 
+builder.Services.AddAuthentication("MyCookieAuth")
+    .AddCookie("MyCookieAuth", options =>
+    {
+        options.LoginPath = PathString.FromUriComponent("/Home/Index");
+        options.AccessDeniedPath = PathString.FromUriComponent("/Employees/AccessDenied");
+    });
+
+builder.Services.AddAuthorization();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -19,6 +25,7 @@ builder.Services.
     .AddDataAccess(builder.Configuration)
     .AddSessionConfiguration()
     .AddRateLimiter()
+    .AddCompressionConfiguration()
     .AddDbContextConfiguraion(builder.Configuration);
 
 
@@ -37,7 +44,9 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseSessionconfiguration();
+app.UseResponseCompression();
 app.UseRateLimiters();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

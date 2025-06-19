@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Employee.Domain.Models
 {
@@ -22,6 +17,7 @@ namespace Employee.Domain.Models
         public string Password { get; set; } = string.Empty; 
         [Required(ErrorMessage = "PhoneNumber is required"), MinLength(10), MaxLength(10)]
         public string PhoneNumber { get; set; } = string.Empty;
-    
+        
+        public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
     }
 }

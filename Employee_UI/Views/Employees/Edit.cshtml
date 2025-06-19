@@ -8,7 +8,7 @@
 <div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-12 col-md-8 bg-white p-4 shadow rounded-3 border">
-            <h2 class="mb-4 text-primary">Create Employee</h2>
+            <h2 class="mb-4 text-primary">Edit Employee</h2>
 
             <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
@@ -165,7 +165,7 @@
                 </div>
 
                 <div class="mt-4 d-flex justify-content-between">
-                    <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-box-arrow-left"></i></a>
+                    <a asp-action="Index" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-   title="Back"><i class="bi bi-box-arrow-left"></i></a>
                     <input type="button" id="EditEmployee" value="Save" class="btn btn-primary" />
                 </div>
             </form>
@@ -181,26 +181,26 @@
     <script>
         function fetchFormData()
         {
-                var employeeId = $('#EmployeeId').val();
-                var firstName = $('#FirstName').val();
-                var lastName = $('#LastName').val();
-                var email = $('#Email').val();
-                var phoneNumber = $('#PhoneNumber').val();
-                var nationalIdNumber = $('#NationalIdNumber').val();
-                var address = $('#Address').val();
-                var departmentId = parseInt($('#DepartmentId').val(), 10);
-                var designation = $('#Designation').val();
-                var dateOfBirth = $('#DateOfBirth').val();
-                var dateOfJoining = $('#DateOfJoining').val();
-                var isActive = $('#IsActive').prop('checked'); 
-                var salary = $('#Salary').val();
-                var gender = $('#Gender').val();
-                var bloodGroup = $('#BloodGroup').val();
-                var maritalStatus = $('#MaritalStatus').val();
-                var createdDate = $('#CreatedAt').val();
-                var modifiedDate = $('#UpdatedAt').val();
+                const employeeId = $('#EmployeeId').val();
+                const firstName = $('#FirstName').val();
+                const lastName = $('#LastName').val();
+                const email = $('#Email').val();
+                const phoneNumber = $('#PhoneNumber').val();
+                const nationalIdNumber = $('#NationalIdNumber').val();
+                const address = $('#Address').val();
+                const departmentId = parseInt($('#DepartmentId').val(), 10);
+                const designation = $('#Designation').val();
+                const dateOfBirth = $('#DateOfBirth').val();
+                const dateOfJoining = $('#DateOfJoining').val();
+                const isActive = $('#IsActive').prop('checked'); 
+                const salary = $('#Salary').val();
+                const gender = $('#Gender').val();
+                const bloodGroup = $('#BloodGroup').val();
+                const maritalStatus = $('#MaritalStatus').val();
+                const createdDate = $('#CreatedAt').val();
+                const modifiedDate = $('#UpdatedAt').val();
 
-                var object = {
+            return {
                     employeeId,
                     firstName,
                     lastName,
@@ -220,8 +220,6 @@
                     createdDate,
                     modifiedDate
                 };
-
-                return object;
         }
 
         $('#EditEmployee').on('click', function()

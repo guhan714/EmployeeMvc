@@ -9,6 +9,7 @@ namespace Employee.BusinessLogic
         public static IServiceCollection AddBusinessLogic(this IServiceCollection services)
         {
             services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<ILoginService, LoginService>();
             return services;
         }
     }

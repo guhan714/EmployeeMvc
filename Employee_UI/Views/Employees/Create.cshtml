@@ -11,6 +11,7 @@
             <h2 class="mb-4 text-primary">Create Employee</h2>
 
             <form asp-action="Edit">
+                @Html.AntiForgeryToken();
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
                 <input type="hidden" asp-for="EmployeeId"/>
 
@@ -22,7 +23,7 @@
                             <span class="input-group-text">
                                 <i class="bi bi-person-lines-fill"></i>
                             </span>
-                            <input asp-for="FirstName" class="form-control" />
+                            <input asp-for="FirstName" class="form-control"/>
                         </div>
                         <span asp-validation-for="FirstName" class="text-danger"></span>
                     </div>
@@ -32,7 +33,7 @@
                             <span class="input-group-text">
                                 <i class="bi bi-person-lines-fill"></i>
                             </span>
-                            <input asp-for="LastName" class="form-control" />
+                            <input asp-for="LastName" class="form-control"/>
                         </div>
                         <span asp-validation-for="LastName" class="text-danger"></span>
                     </div>
@@ -42,7 +43,7 @@
                             <span class="input-group-text">
                                 <i class="bi bi-envelope"></i> <!-- Bootstrap Icons: envelope -->
                             </span>
-                            <input asp-for="Email" class="form-control" />
+                            <input asp-for="Email" class="form-control"/>
                         </div>
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
@@ -52,7 +53,7 @@
                             <span class="input-group-text">
                                 <i class="bi bi-phone"></i>
                             </span>
-                            <input asp-for="PhoneNumber" class="form-control" />
+                            <input asp-for="PhoneNumber" class="form-control"/>
                         </div>
                         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                     </div>
@@ -64,7 +65,7 @@
                             <span class="input-group-text">
                                 <i class="bi bi-person-vcard"></i>
                             </span>
-                            <input asp-for="NationalIdNumber" class="form-control" />
+                            <input asp-for="NationalIdNumber" class="form-control"/>
                         </div>
                         <span asp-validation-for="NationalIdNumber" class="text-danger"></span>
                     </div>
@@ -75,13 +76,13 @@
                     </div>
                     <div class="col-md-12">
                         <label asp-for="Address" class="form-label">Address</label>
-                            <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="bi bi-house"></i>
-                                </span>
-                                <input asp-for="Address" class="form-control" />
-                            </div>
-                            <span asp-validation-for="Address" class="text-danger"></span>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-house"></i>
+                            </span>
+                            <input asp-for="Address" class="form-control"/>
+                        </div>
+                        <span asp-validation-for="Address" class="text-danger"></span>
                     </div>
 
                     <!-- Department & Role -->
@@ -92,9 +93,9 @@
                                 <i class="bi bi-building"></i> <!-- Department icon -->
                             </span>
                             @Html.DropDownListFor(model => model.DepartmentId,
-                            ViewBag.DepartmentId as SelectList,
-                                                        "Select Department",
-                                                        new { @class = "form-select" })
+                                ViewBag.DepartmentId as SelectList,
+                                "Select Department",
+                                new { @class = "form-select" })
                         </div>
                         <span asp-validation-for="DepartmentId" class="text-danger"></span>
                     </div>
@@ -105,7 +106,7 @@
                             <span class="input-group-text">
                                 <i class="bi bi-briefcase"></i> <!-- Bootstrap Icon for Designation -->
                             </span>
-                            <input asp-for="Designation" class="form-control" />
+                            <input asp-for="Designation" class="form-control"/>
                         </div>
                         <span asp-validation-for="Designation" class="text-danger"></span>
                     </div>
@@ -123,7 +124,7 @@
                         <label asp-for="Salary" class="form-label">Salary</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text">&#8377</span>
-                            <input asp-for="Salary" class="form-control" />
+                            <input asp-for="Salary" class="form-control"/>
                             <span class="input-group-text">.00</span>
                         </div>
                         <span asp-validation-for="Salary" class="text-danger"></span>
@@ -139,7 +140,7 @@
                             <span class="input-group-text">
                                 <i class="bi bi-droplet-fill"></i>
                             </span>
-                            <input asp-for="BloodGroup" class="form-control" />
+                            <input asp-for="BloodGroup" class="form-control"/>
                         </div>
                         <span asp-validation-for="BloodGroup" class="text-danger"></span>
                     </div>
@@ -149,7 +150,7 @@
                             <span class="input-group-text">
                                 <i class="bi bi-people-fill"></i>
                             </span>
-                            <input asp-for="MaritalStatus" class="form-control" />
+                            <input asp-for="MaritalStatus" class="form-control"/>
                         </div>
                         <span asp-validation-for="MaritalStatus" class="text-danger"></span>
                     </div>
@@ -292,7 +293,7 @@
 
         $('#SubmitEmployee').on('click', function () {
 
-            let employee = {
+            const employee = {
                 firstName: $('#FirstName').val(),
                 lastName: $('#LastName').val(),
                 email: $('#Email').val(),
@@ -315,11 +316,15 @@
             let validationResult = validateEmployee(employee);
             if (!validationResult)
                 return;
-
+            const token = '@Html.AntiForgeryToken()';
+            const tokenValue = $(token).val();
+            
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("Create", "Employees")',
-                data: {employees: employee},
+                data: {
+                    __RequestVerificationToken: tokenValue,
+                    employees: employee},
                 success: function (response) {
 
                     if (!response.success) {
