@@ -1,10 +1,10 @@
-﻿using Employee.BusinessLogic.Result;
-using Employee.Domain.Models;
+﻿using Employee.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Employee.BusinessLogic.Results;
 
 namespace Employee.BusinessLogic.Interfaces.Service.Domain
 {

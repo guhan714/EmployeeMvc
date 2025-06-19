@@ -1,14 +1,9 @@
-﻿using Employee.BusinessLogic.Interfaces.IRepository;
+﻿using Employee.BusinessLogic.Interfaces.Repository;
 using Employee.BusinessLogic.Interfaces.Service.Domain;
 using Employee.BusinessLogic.Interfaces.Service.Masters;
-using Employee.BusinessLogic.Result;
+using Employee.BusinessLogic.Results;
 using Employee.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace Employee.BusinessLogic.Service
 {

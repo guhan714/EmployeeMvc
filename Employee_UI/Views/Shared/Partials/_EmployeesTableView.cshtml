@@ -27,14 +27,14 @@
         <table id="EmployeesTable" class="table table-bordered table-hover align-middle nowrap" style="width:100%">
             <thead class="table-primary text-center">
                 <tr>
-                    <th class = 'text-center'>First Name</th>
-                    <th class = 'text-center'>Last Name</th>
-                    <th class = 'text-center'>Email</th>
-                    <th class = 'text-center'>Phone Number</th>
-                    <th class = 'text-center'>Designation</th>
-                    <th class = 'text-center'>Department</th>
-                    <th class = 'text-center'>Status</th>
-                    <th class = 'text-center'>Actions</th>
+                    <th class = "text-center">First Name</th>
+                    <th class = "text-center">Last Name</th>
+                    <th class = "text-center">Email</th>
+                    <th class = "text-center">Phone Number</th>
+                    <th class = "text-center">Designation</th>
+                    <th class = "text-center">Department</th>
+                    <th class = "text-center">Status</th>
+                    <th class = "text-center">Actions</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -44,7 +44,7 @@
 
 <!-- DATATABLE INITIALIZATION -->
 <script>
-    $(document).ready(function () {
+        const isAdmin = @Json.Serialize(User.IsInRole("Admin"));
         let table = $('#EmployeesTable').DataTable({
             processing: true,
             serverSide: true,
@@ -75,7 +75,10 @@
                     data: 'employeeId',
                     orderable: false,
                     render: function (data) {
-                        return `
+                        if (!isAdmin) 
+                           return `<a href="/Employees/Details/${data}" class="text-info" title="Details"><i class="bi bi-info-circle"></i></a>`
+                        else
+                            return `
                             <a href="/Employees/Edit/${data}" class="text-primary me-1" title="Edit"><i class="bi bi-pencil-square"></i></a>
                             <a href="/Employees/Details/${data}" class="text-info me-1" title="Details"><i class="bi bi-info-circle"></i></a>
                             <a href="/Employees/Delete/${data}" class="text-danger" title="Delete"><i class="bi bi-trash"></i></a>
@@ -89,5 +92,5 @@
         $('#SearchFilter').on('click', function () {
             table.ajax.reload();
         });
-    });
+
 </script>

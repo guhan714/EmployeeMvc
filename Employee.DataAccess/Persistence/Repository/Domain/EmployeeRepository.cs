@@ -1,15 +1,9 @@
 ﻿using Employee.BusinessLogic;
-using Employee.BusinessLogic.Interfaces.IRepository;
 using Employee.DataAccess.Persistence.DbContexts;
 using Employee.Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+using Employee.BusinessLogic.Interfaces.Repository;
+using ZLinq;
 
 namespace Employee.DataAccess.Persistence.Repository.Domain
 {
@@ -55,7 +49,7 @@ namespace Employee.DataAccess.Persistence.Repository.Domain
                 .AsQueryable();
 
             if (!string.IsNullOrEmpty(name))
-                query = query.Where(e => e.FirstName.Contains(name));
+                query = query.Where(e => EF.Functions.Like(e.FirstName, $"%{name}%"));
 
             if (!string.IsNullOrEmpty(phone))
                 query = query.Where(e => e.PhoneNumber == phone);
@@ -75,11 +69,11 @@ namespace Employee.DataAccess.Persistence.Repository.Domain
                 {
                     EmployeeId = e.EmployeeId,
                     FirstName = e.FirstName,
-                    LastName = e.LastName,
+                    LastName = e.LastName ?? string.Empty,
                     Email = e.Email,
-                    PhoneNumber = e.PhoneNumber,
+                    PhoneNumber = e.PhoneNumber!,
                     Department = e.Department.DepartmentName,
-                    Designation = e.Designation,
+                    Designation = e.Designation!,
                     IsActive = e.IsActive
                 })
                 .ToListAsync();
@@ -107,26 +101,58 @@ namespace Employee.DataAccess.Persistence.Repository.Domain
 
         private void UpdateEmployeeProperties(Employees? existingEmployee, Employees employee, string? user)
         {
-
             employee.ModifiedBy = user;
-
-            existingEmployee.FirstName = employee.FirstName;
-            existingEmployee.LastName = employee.LastName;
-            existingEmployee.Email = employee.Email;
-            existingEmployee.PhoneNumber = employee.PhoneNumber;
-            existingEmployee.NationalIdNumber = employee.NationalIdNumber;
-            existingEmployee.Address = employee.Address;
-            existingEmployee.DateOfBirth = employee.DateOfBirth;
-            existingEmployee.Gender = employee.Gender;
-            existingEmployee.DepartmentId = employee.DepartmentId;
-            existingEmployee.Designation = employee.Designation;
-            existingEmployee.DateOfJoining = employee.DateOfJoining;
-            existingEmployee.UpdatedAt = DateTime.Now;
+            employee.ModifiedBy = user;
+            
+            if(existingEmployee?.FirstName != employee.FirstName)
+                existingEmployee.FirstName = employee.FirstName;
+            
+            if(existingEmployee.LastName != employee.LastName)
+                existingEmployee.LastName = employee.LastName;
+            
+            if(existingEmployee.Email != employee.Email)
+                existingEmployee.Email = employee.Email;
+            
+            if(existingEmployee.PhoneNumber != employee.PhoneNumber)
+                existingEmployee.PhoneNumber = employee.PhoneNumber;
+            
+            if(existingEmployee.NationalIdNumber != employee.NationalIdNumber)
+                existingEmployee.NationalIdNumber = employee.NationalIdNumber;
+            
+            if(existingEmployee.Address != employee.Address)
+                existingEmployee.Address = employee.Address;
+            
+            if(existingEmployee.DateOfBirth != employee.DateOfBirth)
+                existingEmployee.DateOfBirth = employee.DateOfBirth;
+            
+            if(existingEmployee.Gender != employee.Gender)
+                existingEmployee.Gender = employee.Gender;
+            
+            if(existingEmployee.DepartmentId != employee.DepartmentId)
+                existingEmployee.DepartmentId = employee.DepartmentId;
+            
+            if(existingEmployee.Designation != employee.Designation)
+                existingEmployee.Designation = employee.Designation;
+            
+            if(existingEmployee.DateOfJoining != employee.DateOfJoining)
+                existingEmployee.DateOfJoining = employee.DateOfJoining;
+            
+            if(existingEmployee.UpdatedAt != employee.UpdatedAt)
+                existingEmployee.UpdatedAt = DateTime.Now;
+            
+            if(existingEmployee.BloodGroup != employee.BloodGroup)
+                existingEmployee.BloodGroup = employee.BloodGroup;
+            
             existingEmployee.ModifiedBy = employee.ModifiedBy;
-            existingEmployee.BloodGroup = employee.BloodGroup;
-            existingEmployee.ModifiedBy = employee.ModifiedBy;
-            existingEmployee.MaritalStatus = employee.MaritalStatus;
-            existingEmployee.IsActive = employee.IsActive;
+            
+            if(existingEmployee.MaritalStatus != employee.MaritalStatus)
+                existingEmployee.MaritalStatus = employee.MaritalStatus;
+            
+            if(existingEmployee.Salary != employee.Salary)
+                existingEmployee.Salary = employee.Salary;
+            
+            if(existingEmployee.IsActive != employee.IsActive)
+                existingEmployee.IsActive = employee.IsActive;
         }
     }
 }

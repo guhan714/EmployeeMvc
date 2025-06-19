@@ -1,4 +1,4 @@
-﻿using Employee.BusinessLogic.Interfaces.IRepository;
+﻿using Employee.BusinessLogic.Interfaces.Repository;
 using Employee.BusinessLogic.Interfaces.Service.Masters;
 using Employee.BusinessLogic.Interfaces.Service.Security;
 using Employee.DataAccess.Persistence.DbContexts;
@@ -21,9 +21,16 @@ namespace Employee.DataAccess.DependencyInjector
             {
                 options.UseSqlServer(connectionString!);
             });
+            /*
+            services.AddDbContextFactory<AppDbContext>(options =>
+                options.UseSqlServer(connectionString));
+                */
+            
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IDepartmentMaster, DepartmentMaster>();
             services.AddScoped<IQueryService, EmployeeQueryService>();
+            services.AddScoped<ILoginRepository, LoginRepository>();
+            services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<ICryptographyService, BcryptHashingService>();
             return services;
         }
